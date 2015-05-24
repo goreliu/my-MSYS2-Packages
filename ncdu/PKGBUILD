@@ -12,14 +12,14 @@ source=("http://dev.yorhel.nl/download/${pkgname}-${pkgver}.tar.gz")
 sha1sums=('8f22d713e6d2b28e1f501eee2bd1e03b55550c8d')
 
 build() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/${pkgname}-${pkgver}"
     sed -i 's|ncurses.h|ncurses/ncurses.h|g' configure src/*.h src/*.c
-	./configure --prefix=/usr
-	make
+  ./configure --prefix=/usr
+  make
 }
 
 package() {
-	cd "${srcdir}/${pkgname}-${pkgver}"
-	make DESTDIR="${pkgdir}" install
-	install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }

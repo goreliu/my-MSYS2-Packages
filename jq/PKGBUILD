@@ -13,19 +13,19 @@ source=("http://stedolan.github.io/jq/download/source/${_realname}-${pkgver}.tar
 md5sums=('e3c75a4f805bb5342c9f4b3603fb248f')
 
 build() {
-    cd "${_realname}-${pkgver}"
+  cd "${_realname}-${pkgver}"
 
-    ./configure \
-      --prefix=${MINGW_PREFIX} \
-      --build=${MINGW_CHOST} \
-      --host=${MINGW_CHOST}
+  ./configure \
+    --prefix=${MINGW_PREFIX} \
+    --build=${MINGW_CHOST} \
+    --host=${MINGW_CHOST}
 
-    make
+  make
 }
 
 package() {
-    cd "${_realname}-${pkgver}"
+  cd "${_realname}-${pkgver}"
 
-    make DESTDIR="${pkgdir}" install
-    install -Dm644 COPYING "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}${MINGW_PREFIX}/share/licenses/${_realname}/COPYING"
 }
