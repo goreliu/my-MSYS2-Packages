@@ -1,1 +1,1 @@
-* hub
+* hub (compile with go)
