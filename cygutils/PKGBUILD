@@ -1,0 +1,31 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=cygutils
+pkgver=1.4.14
+pkgrel=1
+pkgdesc="A collection of simple cygwin utilities"
+arch=('i686' 'x86_64')
+url="http://cygutils.fruitbat.org/cygutils-package/index.html"
+license=('custom')
+depends=('popt')
+source=("http://mirror.bit.edu.cn/cygwin/x86_64/release/cygutils/${pkgname}-${pkgver}-1-src.tar.bz2")
+sha1sums=('f9f5ae35ba61aa6efccf9581c2b019c26ea6671a')
+
+build() {
+  cd "${srcdir}"
+  tar -xf ${pkgname}-${pkgver}.tar.xz
+  cd ${pkgname}-${pkgver}
+  ./configure --prefix=/usr
+  sed -i 's/stricmp/strcasecmp/g' src/lpr/Printer.cc
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+  install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
+  for i in `find -name '*.exe'`; do
+      cp $i "${pkgdir}"/usr/bin/
+  done
+}
