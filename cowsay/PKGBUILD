@@ -1,0 +1,27 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=cowsay
+pkgver=3.03
+pkgrel=9
+pkgdesc='Configurable talking cow (and a few other creatures)'
+arch=('any')
+url='http://www.nog.net/~tony/warez/'
+license=('PerlArtistic' 'GPL')
+depends=('perl')
+source=(http://www.nog.net/~tony/warez/${pkgname}-${pkgver}.tar.gz
+        cowsay.patch)
+sha256sums=('0b8672a7ac2b51183780db72618b42af8ec1ce02f6c05fe612510b650540b2af'
+            'aa88442a31f01ffe5884b3ae974ed1ced23d860859d7f2234cdcd3ac437fc17f')
+
+build() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+	patch -p1 -i $srcdir/cowsay.patch
+	sed -i 's|/man/|/share/man/|' install.sh
+}
+
+package() {
+	cd ${srcdir}/${pkgname}-${pkgver}
+	echo "${pkgdir}/usr" | ./install.sh
+	# This one is not a valid '.cow' file
+	rm ${pkgdir}/usr/share/cows/mech-and-cow
+}
