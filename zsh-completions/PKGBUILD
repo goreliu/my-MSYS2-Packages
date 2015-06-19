@@ -1,0 +1,33 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=zsh-completions
+pkgver=0.12.0
+pkgrel=2
+pkgdesc="Additional completion definitions for Zsh"
+arch=(any)
+url="https://github.com/zsh-users/zsh-completions"
+license=('BSD' 'MIT' 'unknown')
+depends=('zsh')
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/zsh-users/${pkgname}/tarball/${pkgver}"
+        "LICENSE-BSD"
+        "LICENSE-MIT")
+md5sums=('1493e5573083e979a11f439001335df1'
+         '4f686c32a301905655f945fbbdd56880'
+         '159dd6fa77daca30268c2438111becae')
+changelog=ChangeLog
+
+package() {
+  install -dm755 "${pkgdir}/usr/share/zsh/site-functions"
+  install -Dm644 "${srcdir}"/zsh-users-${pkgname}-*/src/* "${pkgdir}/usr/share/zsh/site-functions"
+
+  # remove completions which are provided by upstream
+  rm "${pkgdir}/usr/share/zsh/site-functions/_docker"
+  rm "${pkgdir}/usr/share/zsh/site-functions/_envoy"
+  rm "${pkgdir}/usr/share/zsh/site-functions/_salt"
+
+  # license
+  install -Dm644 "${srcdir}/LICENSE-BSD" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-BSD"
+  install -Dm644 "${srcdir}/LICENSE-MIT" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-MIT"
+}
+
+# vim:set ts=2 sw=2 et:
