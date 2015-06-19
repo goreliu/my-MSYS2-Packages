@@ -1,0 +1,48 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=w3m
+pkgver=0.5.3
+pkgrel=1
+pkgdesc='Text-based Web browser, as well as pager'
+url='http://w3m.sourceforge.net/'
+license=('custom')
+arch=('i686' 'x86_64')
+makedepends=('libgc-devel')
+depends=('openssl' 'libgc' 'ncurses')
+source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz"
+    'form_unknown.patch'
+    'file_handle.patch'
+    'https.patch'
+    'cygwin.patch')
+sha1sums=('444b6c8cf7094ee95f8e9de96b37f814b9d83237'
+    '23d648033ad77f3c67d370c62cf7b7ed86b5c6f2'
+    '457de43be7eabc652614461a7ab25e3ba76b2aff'
+    '66affb2f695fe0bdde25cf774642bfd6a9404e88'
+    'a6ae3127d1e827774cbd26420ea5c0b22437ad48')
+
+prepare() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ls ../*.patch | xargs -i patch -p1 -i {}
+}
+
+build() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  ./configure \
+    --build=x86_64-cygwin \
+    --prefix=/usr \
+    --libexecdir=/usr/lib \
+    --with-termlib=ncurses \
+    --disable-w3mmailer \
+    --disable-mouse \
+
+  make
+}
+
+package() {
+  cd "${srcdir}/${pkgname}-${pkgver}"
+  make DESTDIR="${pkgdir}" install
+
+  install -d "${pkgdir}"/usr/share/{doc,licenses}/"${pkgname}"
+  find doc/* | grep -v CVS | xargs -i install -m644 "{}" "${pkgdir}/usr/share/doc/${pkgname}"
+  ln -s ../../doc/"${pkgname}"/README "${pkgdir}/usr/share/licenses/${pkgname}"
+}
