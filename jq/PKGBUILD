@@ -1,0 +1,15 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=jq
+pkgver=1.5
+pkgrel=1
+pkgdesc='Command-line JSON processor'
+arch=('x86_64')
+url='http://stedolan.github.io/jq/'
+license=('MIT')
+source=("https://github.com/stedolan/${pkgname}/releases/download/${pkgname}-1.5/${pkgname}-win64.exe")
+md5sums=('5e95f62355b050f7e739fa3660a7cc74')
+
+package() {
+    install -Dm755 "${pkgname}-win64.exe" "${pkgdir}/usr/bin/${pkgname}.exe"
+}
