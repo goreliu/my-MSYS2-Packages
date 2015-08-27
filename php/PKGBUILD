@@ -1,0 +1,21 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=php
+pkgver=5.6.12
+pkgrel=1
+arch=('x86_64')
+license=('PHP')
+url='http://www.php.net'
+source=("http://windows.php.net/downloads/releases/${pkgname}-${pkgver}-nts-Win32-VC11-x64.zip")
+md5sums=('b8ee3ea3790cac28e17b92cd9e7b6bd5')
+OPTIONS=(!strip)
+
+package() {
+  cd "${srcdir}"
+  mkdir -p "${pkgdir}/opt/php"
+  cp -r * "${pkgdir}/opt/php"
+
+  mkdir -p "${pkgdir}/usr/bin"
+  cd "${pkgdir}/usr/bin"
+  ln -s ../../opt/php/*.exe .
+}
