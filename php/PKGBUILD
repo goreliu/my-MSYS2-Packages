@@ -2,7 +2,7 @@
 
 pkgname=php
 pkgver=5.6.12
-pkgrel=1
+pkgrel=2
 arch=('x86_64')
 license=('PHP')
 url='http://www.php.net'
@@ -12,6 +12,7 @@ OPTIONS=(!strip)
 
 package() {
   cd "${srcdir}"
+  rm ${pkgname}-${pkgver}-nts-Win32-VC11-x64.zip
   mkdir -p "${pkgdir}/opt/php"
   cp -r * "${pkgdir}/opt/php"
 
