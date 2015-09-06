@@ -1,0 +1,3 @@
+post_install() {
+    vcredist_x64
+}

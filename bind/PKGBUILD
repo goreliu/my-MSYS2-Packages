@@ -1,0 +1,29 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=bind
+_pkgver=9.10.2-P4
+pkgver=${_pkgver//-/.}
+pkgrel=1
+pkgdesc='The ISC DNS Server'
+arch=('x86_64')
+license=('custom:ISC')
+url='http://www.isc.org/software/bind'
+source=("http://ftp.isc.org/isc/bind9/$_pkgver/BIND$_pkgver.x64.zip")
+md5sums=('0f59aa797943ccece2e16496c76535ff')
+OPTIONS=(!strip)
+install="$pkgname.install"
+
+package() {
+  cd "${srcdir}"
+  rm BIND$_pkgver.x64.zip
+
+  mkdir doc
+  mv $(find -type f|grep -v exe|grep -v dll) doc
+
+  mkdir -p "${pkgdir}/opt/$pkgname"
+  cp -r * "${pkgdir}/opt/$pkgname"
+
+  mkdir -p "${pkgdir}/usr/bin"
+  cd "${pkgdir}/usr/bin"
+  ln -s ../../opt/$pkgname/*.exe .
+}
