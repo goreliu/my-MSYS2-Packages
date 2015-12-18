@@ -1,7 +1,7 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
 pkgname=ranger
-pkgver=1.7.1
+pkgver=1.7.2
 pkgrel=1
 pkgdesc='A simple, vim-like file manager'
 arch=('any')
@@ -23,7 +23,7 @@ optdepends=(
     'perl-image-exiftool: for viewing information about media files')
 conflicts=('ranger-git')
 source=("http://ranger.nongnu.org/${pkgname}-${pkgver}.tar.gz")
-md5sums=('ec64bc12d3edfd784b1d67023fdf21fc')
+md5sums=('cc436fe2035a024755a1cad255bffaaf')
 
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
