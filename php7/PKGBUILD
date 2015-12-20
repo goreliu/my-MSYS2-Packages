@@ -1,0 +1,24 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=php7
+_realname=php
+pkgver=7.0.1
+pkgrel=1
+pkgdesc='An HTML-embedded scripting language'
+arch=('x86_64')
+license=('PHP')
+url='http://www.php.net'
+source=("http://windows.php.net/downloads/releases/${_realname}-${pkgver}-nts-Win32-VC14-x64.zip")
+md5sums=('d37deceb3ace47783095b94ddeecca59')
+OPTIONS=(!strip)
+
+package() {
+  cd "${srcdir}"
+  rm ${_realname}-${pkgver}-nts-Win32-VC14-x64.zip
+  mkdir -p "${pkgdir}/opt/${pkgname}"
+  cp -r * "${pkgdir}/opt/${pkgname}"
+
+  mkdir -p "${pkgdir}/usr/bin"
+  cd "${pkgdir}/usr/bin"
+  ln -s ../../opt/${pkgname}/*.exe .
+}
