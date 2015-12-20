@@ -1,31 +1,29 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
 pkgname=cygutils
-pkgver=1.4.14
-pkgrel=1
+pkgver=1.4.15
+pkgrel=2
 pkgdesc="A collection of simple cygwin utilities"
 arch=('i686' 'x86_64')
 url="http://cygutils.fruitbat.org/cygutils-package/index.html"
 license=('custom')
 depends=('popt')
-source=("http://mirror.bit.edu.cn/cygwin/x86_64/release/cygutils/${pkgname}-${pkgver}-1-src.tar.bz2")
-sha1sums=('f9f5ae35ba61aa6efccf9581c2b019c26ea6671a')
+makedepends=('gettext-devel' 'libtool')
+source=("http://mirror.bit.edu.cn/cygwin/x86_64/release/cygutils/${pkgname}-${pkgver}-${pkgrel}-src.tar.xz")
+sha1sums=('85bd85273c20baa1f6d92c374cd15f6aefb8a6b1')
 
 build() {
   cd "${srcdir}"
-  tar -xf ${pkgname}-${pkgver}.tar.xz
-  cd ${pkgname}-${pkgver}
+  tar -xf ${pkgname}-${pkgver}-${pkgrel}.src/cygwin-${pkgname}-${pkgver}.tar.bz2
+  cd cygwin-${pkgname}
+  ./bootstrap
   ./configure --prefix=/usr
-  sed -i 's/stricmp/strcasecmp/g' src/lpr/Printer.cc
 
   make
 }
 
 package() {
-  cd "${srcdir}/${pkgname}-${pkgver}"
+  cd "${srcdir}/cygwin-${pkgname}"
   make DESTDIR="${pkgdir}" install
   install -Dm644 COPYING "${pkgdir}"/usr/share/licenses/${pkgname}/LICENSE
-  for i in `find -name '*.exe'`; do
-      cp $i "${pkgdir}"/usr/bin/
-  done
 }
