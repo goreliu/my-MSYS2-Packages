@@ -2,12 +2,12 @@
 
 pkgname=w3m
 pkgver=0.5.3
-pkgrel=2
+pkgrel=1
 pkgdesc='Text-based Web browser, as well as pager'
 url='http://w3m.sourceforge.net/'
 license=('custom')
 arch=('i686' 'x86_64')
-makedepends=('libgc-devel' 'openssl-devel')
+makedepends=('libgc-devel' 'openssl-devel' 'ncurses-devel')
 depends=('openssl' 'libgc' 'ncurses')
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz"
     'form_unknown.patch'
