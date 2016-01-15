@@ -1,0 +1,28 @@
+# Maintainer: Gore Liu <goreliu@126.com>
+
+pkgname=screenfetch
+pkgver=3.7.0
+pkgrel=1
+pkgdesc="CLI Bash script to show system/theme info in screenshots"
+arch=('any')
+url="https://github.com/KittyKatt/screenFetch"
+license=('GPL')
+depends=('bash')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/KittyKatt/screenFetch/archive/$pkgver.tar.gz")
+md5sums=('f58cdda5c7d55f703893b9a80cef12cf')
+
+build() {
+  cd screenFetch-$pkgver
+  sed -i 's/Cygwin/Msys/g' screenfetch-dev
+  sed -i 's/cygwin/msys/g' screenfetch-dev
+  sed -i 's/ \/v / \/\/v /g' screenfetch-dev
+  sed -i "s/'Arch Linux'|/'Arch Linux'|'Msys'|/g" screenfetch-dev
+  sed -i 's/myUser=${USER}/myUser=$(id -un)/g' screenfetch-dev
+}
+
+package() {
+  cd screenFetch-$pkgver
+
+  install -Dm755 "screenfetch-dev" "$pkgdir/usr/bin/screenfetch"
+  install -Dm644 "screenfetch.1" "$pkgdir/usr/share/man/man1/screenfetch.1"
+}
