@@ -1,7 +1,7 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
 pkgname=bind
-_pkgver=9.10.3-P2
+_pkgver=9.10.3-P3
 pkgver=${_pkgver//-/.}
 pkgrel=1
 pkgdesc='The ISC DNS Server'
@@ -9,7 +9,7 @@ arch=('x86_64')
 license=('custom:ISC')
 url='http://www.isc.org/software/bind'
 source=("http://ftp.isc.org/isc/bind9/$_pkgver/BIND$_pkgver.x64.zip")
-md5sums=('d957447886e49d9d8a9901d85ecbf048')
+md5sums=('4ef25209ed135a3ce63ecdf757fe6566')
 OPTIONS=(!strip)
 install="$pkgname.install"
 
