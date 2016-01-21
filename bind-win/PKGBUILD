@@ -1,6 +1,7 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
-pkgname=bind
+pkgname=bind-win
+_realname=bind
 _pkgver=9.10.3-P3
 pkgver=${_pkgver//-/.}
 pkgrel=1
@@ -20,10 +21,10 @@ package() {
   mkdir doc
   mv $(find -type f|grep -v exe|grep -v dll) doc
 
-  mkdir -p "${pkgdir}/opt/$pkgname"
-  cp -r * "${pkgdir}/opt/$pkgname"
+  mkdir -p "${pkgdir}/opt/$_realname"
+  cp -r * "${pkgdir}/opt/$_realname"
 
   mkdir -p "${pkgdir}/usr/bin"
   cd "${pkgdir}/usr/bin"
-  ln -s ../../opt/$pkgname/*.exe .
+  ln -s ../../opt/$_realname/*.exe .
 }
