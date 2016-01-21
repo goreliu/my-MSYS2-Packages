@@ -1,0 +1,101 @@
+# Maintainer: Alexey Pavlov <alexpux@gmail.com>
+
+pkgbase=zsh
+pkgname=('zsh' 'zsh-doc')
+pkgver=5.2
+pkgrel=1
+arch=('i686' 'x86_64')
+url='http://www.zsh.org/'
+license=('custom')
+makedepends=('ncurses-devel' 'pcre-devel' 'libiconv-devel' 'libgdbm-devel' 'texinfo')
+source=("http://www.zsh.org/pub/zsh-${pkgver}.tar.gz"
+        "http://www.zsh.org/pub/zsh-${pkgver}-doc.tar.gz"
+        'config.guess::http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
+        'config.sub::http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
+        'zprofile'
+        Makefile.in.patch
+        add-pwd-W-option.patch
+        msysize.patch
+        zsh-5.0.6-1.patch
+        msys-symlink-hack.patch)
+md5sums=('e79e3edfc133e2091456ca0be6f2ecb5'
+         'ecc3be3f0e465ca3c3c56472312515b9'
+         '3428a06751c63f7aee005f42c714b00e'
+         '22953cb71756df39bf8ff31389523225'
+         '24a9335edf77252a7b5f52e079f7aef7'
+         'ca9d481e1aa03e864734734d2267afb0'
+         '51a8f2979ce99db238bc38c2f477df74'
+         'edcafce2abb584422877327a9ca7b9de'
+         '2b3f986cccd301534909b399557973a5'
+         '79419542f6c2c33cb1a1e209fcd7e98c')
+
+prepare() {
+    cd ${srcdir}/${pkgname}-${pkgver}
+
+    patch -p0 -i "${srcdir}/Makefile.in.patch"
+    patch -p1 -i "${srcdir}/add-pwd-W-option.patch"
+    patch -p1 -i "${srcdir}/msysize.patch"
+    patch -p1 -i "${srcdir}/zsh-5.0.6-1.patch"
+    patch -p1 -i "${srcdir}/msys-symlink-hack.patch"
+
+    autoreconf -fiv
+
+    mv -f ${srcdir}/config.guess ${srcdir}/config.sub ${srcdir}/${pkgname}-${pkgver}/
+    # Set correct keymap path
+    sed -i 's#/usr/share/keymaps#/usr/share/kbd/keymaps#g' Completion/Unix/Command/_loadkeys
+
+    # Remove unneeded and conflicting completion scripts
+    for _fpath in AIX BSD Cygwin Darwin Debian Mandriva openSUSE Redhat Solaris; do
+        rm -rf Completion/$_fpath
+        sed "s#\s*Completion/$_fpath/\*/\*##g" -i Src/Zle/complete.mdd
+    done
+    rm -f  Completion/Linux/Command/_{pkgtool,rpmbuild,yast}
+    rm -f  Completion/Unix/Command/_{osc,systemd}
+}
+
+build() {
+    cd ${srcdir}/${pkgname}-${pkgver}
+
+    ./configure --prefix=/usr \
+        --build=${CHOST} \
+        --host=${CHOST} \
+        --docdir=/usr/share/doc/zsh \
+        --enable-etcdir=/etc/zsh \
+        --enable-zshenv=/etc/zsh/zshenv \
+        --enable-zlogin=/etc/zsh/zlogin \
+        --enable-zlogout=/etc/zsh/zlogout \
+        --enable-zprofile=/etc/zsh/zprofile \
+        --enable-zshrc=/etc/zsh/zshrc \
+        --enable-maildir-support \
+        --with-term-lib='ncursesw' \
+        --enable-multibyte \
+        --enable-function-subdirs \
+        --enable-fndir=/usr/share/zsh/functions \
+        --enable-scriptdir=/usr/share/zsh/scripts \
+        --with-tcsetpgrp \
+        --enable-pcre \
+        --disable-cap \
+        --enable-zsh-secure-free
+    make
+}
+
+package_zsh() {
+    pkgdesc='A very advanced and programmable command interpreter (shell) for UNIX'
+    depends=('ncurses' 'pcre' 'libiconv' 'gdbm')
+    backup=('etc/zsh/zprofile')
+    install=zsh.install
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    make DESTDIR="${pkgdir}/" install
+    install -D -m644 "${srcdir}/zprofile" "${pkgdir}/etc/zsh/zprofile"
+    install -D -m644 LICENCE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
+
+package_zsh-doc() {
+    pkgdesc='Info, HTML and PDF format of the ZSH documentation'
+    install=zsh-doc.install
+
+    cd "${srcdir}/${pkgbase}-${pkgver}"
+    make DESTDIR="${pkgdir}/" install.info
+    install -D -m644 LICENCE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
