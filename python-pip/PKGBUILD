@@ -1,7 +1,7 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
 pkgname=('python-pip' 'python2-pip')
-pkgver=7.1.2
+pkgver=8.0.0
 pkgrel=1
 pkgdesc="The PyPA recommended tool for installing Python packages"
 url="https://pip.pypa.io/"
@@ -9,8 +9,8 @@ arch=('any')
 license=('MIT')
 makedepends=('python' 'python3-setuptools' 'python2' 'python2-setuptools')
 source=(http://pypi.python.org/packages/source/p/pip/pip-${pkgver}.tar.gz)
-md5sums=('3823d2343d9f3aaab21cf9c917710196')
-sha256sums=('ca047986f0528cfa975a14fb9f7f106271d4e0c3fe1ddced6c1db2e7ae57a477')
+md5sums=('5601c4323464add1482291634142894d')
+sha256sums=('90112b296152f270cb8dddcd19b7b87488d9e002e8cf622e14c4da9c2f6319b1')
 
 package_python-pip() {
   depends=('python' 'python3-setuptools')
