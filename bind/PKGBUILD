@@ -91,9 +91,6 @@ package_bind-tools() {
   pkgdesc='The ISC DNS tools'
   depends=('libxml2' 'zlib' 'openssl' 'libreadline')
   optdepends=('python: for python scripts')
-  conflicts=('dnsutils')
-  replaces=('dnsutils' 'host')
-  provides=("dnsutils=$pkgver")
 
   cd "bind-$_pkgver"
   install -Dm644 COPYRIGHT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
