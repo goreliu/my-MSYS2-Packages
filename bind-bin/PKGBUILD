@@ -1,6 +1,6 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
-pkgname=bind-win
+pkgname=bind-bin
 _realname=bind
 _pkgver=9.10.3-P3
 pkgver=${_pkgver//-/.}
