@@ -1,0 +1,152 @@
+# Maintainer: Alexey Pavlov <Alexpux@gmail.com>
+# Contributor: Ray Donnelly <mingw.android@gmail.com>
+
+pkgname=python
+pkgver=3.5.1
+pkgrel=1
+_pybasever=3.4
+pkgdesc="Next generation of the python high-level scripting language"
+arch=('i686' 'x86_64')
+license=('custom')
+url="http://www.python.org/"
+depends=('libbz2' 'libexpat' 'libffi' 'liblzma' 'ncurses' 'libopenssl' 'libreadline' 'libsqlite' 'zlib')
+makedepends=('libbz2-devel' 'libexpat-devel' 'libsqlite-devel' 'libffi-devel' 'ncurses-devel' 'libreadline-devel' 'liblzma-devel' 'openssl-devel' 'zlib-devel')
+#optdepends=('tk: for tkinter' 'sqlite')
+provides=('python3')
+replaces=('python3')
+options=('!makeflags')
+source=(http://www.python.org/ftp/python/${pkgver%rc*}/Python-${pkgver}.tar.xz
+        001-3.4-dbm-cygwin.patch
+        002-3.1-enable-new-dtags.patch
+        003-3.4-tkinter-cygwin.patch
+        004-3.4-ctypes-cygwin.patch
+        005-3.1-PATH_MAX.patch
+        006-3.1-ncurses-abi6.patch
+        007-3.2-export-PySignal_SetWakeupFd.patch
+        008-3.4-distutils-soname.patch
+        009-3.2-distutils-shlibext.patch
+        010-3.4-pep3149-cygwin.patch
+        011-3.4-thread-cygwin64.patch
+        012-3.2-getpath-exe-extension.patch
+        013-3.4-select-cygwin.patch
+        014-3.4-signal-cygwin.patch
+        015-3.4-struct-cygwin.patch
+        016-3.4-ctypes-error-formatting.patch
+        025-MINGW-compiler-customize-mingw-cygwin-compilers.patch
+        900-msysize.patch
+        910-libffi-msys2.patch
+        920-allow-win-drives-in-os-path-isabs.patch)
+sha1sums=('0186da436db76776196612b98bb9c2f76acfe90e'
+          '5e30eb5b1f3d7c6001fc04fbe36a574a8e84ccac'
+          '688d3f1962ddc8904444db80f432b644a2302dee'
+          '11dbd1edba0896109746af524b5b4fd34a525bfd'
+          'ab6ec13e8a6ca745279f0d2c7ade29cba6536972'
+          '0d4d773527a72a8b872d8b0a241a0d4ff2707936'
+          '6622e080460b4584ebc8d960abbd7329c69d9b0c'
+          '4147c504494ac3f219b1945acf680eec50091604'
+          '42ee5c1fdee88d451af3a23ead7ea58c591b2405'
+          '25f20c976aa5a08c3d1c36153ee37d3db1b838d0'
+          'e80a5a4c8e55a77b5f66aee2a2a6390b8a58738b'
+          '406c930cb0f7e33d6e326dca58a8c9846e23f257'
+          'b022b95b89c3933df2d1ce22bc351c94ed27a794'
+          '346183ac40b42b9baceb27d5f176989fa2ad2b4e'
+          '415a2d49249f298f9f399587ae2420f8234bb395'
+          '1166da89b56c68829884d65dd0d9a6be9bce40e7'
+          '099cf537471664801849ea5e36f91cbcb2f20e6a'
+          'd3e68ba2091f6b61f2440e2ef491373c68bf1d0d'
+          '4844871e0cb39d747f6c9b367f07b33f764bf0a2'
+          '4a20a20b7dec2b9e9e87529d2e0347de9fcd6eb8'
+          'e0f3d9388e888357a920c32a4ca525ef4ec69343')
+prepare() {
+  cd "${srcdir}/Python-${pkgver}"
+
+  # FS#23997
+  sed -i -e "s|^#.* /usr/local/bin/python|#!/usr/bin/python|" Lib/cgi.py
+  
+  patch -p1 -i ${srcdir}/001-3.4-dbm-cygwin.patch
+  patch -p1 -i ${srcdir}/002-3.1-enable-new-dtags.patch
+  patch -p1 -i ${srcdir}/003-3.4-tkinter-cygwin.patch
+  patch -p1 -i ${srcdir}/004-3.4-ctypes-cygwin.patch
+  #patch -p1 -i ${srcdir}/005-3.1-PATH_MAX.patch
+  patch -p1 -i ${srcdir}/006-3.1-ncurses-abi6.patch
+  patch -p1 -i ${srcdir}/007-3.2-export-PySignal_SetWakeupFd.patch
+  patch -p1 -i ${srcdir}/008-3.4-distutils-soname.patch
+  patch -p1 -i ${srcdir}/009-3.2-distutils-shlibext.patch
+  #patch -p1 -i ${srcdir}/010-3.4-pep3149-cygwin.patch
+  patch -p1 -i ${srcdir}/011-3.4-thread-cygwin64.patch
+  patch -p1 -i ${srcdir}/012-3.2-getpath-exe-extension.patch
+  patch -p1 -i ${srcdir}/013-3.4-select-cygwin.patch
+  patch -p1 -i ${srcdir}/014-3.4-signal-cygwin.patch
+  patch -p1 -i ${srcdir}/015-3.4-struct-cygwin.patch
+  #patch -p1 -i ${srcdir}/016-3.4-ctypes-error-formatting.patch
+  patch -p1 -i ${srcdir}/025-MINGW-compiler-customize-mingw-cygwin-compilers.patch
+  patch -p1 -i ${srcdir}/900-msysize.patch
+  patch -p1 -i ${srcdir}/910-libffi-msys2.patch
+  patch -p1 -i ${srcdir}/920-allow-win-drives-in-os-path-isabs.patch
+
+  # Incomplete patch from Ray Donnelly
+  # patch -p1 -i ${srcdir}/3.3.2-allow-windows-paths-for-executable.patch
+
+  # Ensure that we are using the system copy of various libraries (expat, zlib and libffi),
+  # rather than copies shipped in the tarball
+  rm -r Modules/expat
+  rm -r Modules/zlib
+  rm -r Modules/_ctypes/{darwin,libffi}*
+  
+  autoreconf -fiv
+}
+
+build() {
+  cd "${srcdir}/Python-${pkgver}"
+
+  CPPFLAGS+=" -I/usr/include/ncursesw"
+  LDFLAGS+=" -L."
+  
+  CXX=/usr/bin/g++ \
+  ./configure \
+    --prefix=/usr \
+    --build=${CHOST} \
+    --host=${CHOST} \
+    --enable-shared \
+    --enable-ipv6 \
+    --with-dbmliborder=gdbm \
+    --with-libc= \
+    --with-libm= \
+    --with-system-expat \
+    --with-system-ffi \
+    --with-threads \
+    --without-ensurepip \
+    ac_cv_func_bind_textdomain_codeset=yes
+
+  make
+}
+
+check() {
+  cd "${srcdir}/Python-${pkgver}"
+  "${srcdir}/Python-${pkgver}/python" -m test.regrtest -x test_posixpath test_logging
+}
+
+package() {
+  cd "${srcdir}/Python-${pkgver}"
+  make DESTDIR="${pkgdir}" install maninstall
+
+  # Why are these not done by default...
+  ln -sf python3               "${pkgdir}"/usr/bin/python.exe
+  ln -sf python3-config        "${pkgdir}"/usr/bin/python-config
+  ln -sf idle3                 "${pkgdir}"/usr/bin/idle
+  ln -sf pydoc3                "${pkgdir}"/usr/bin/pydoc
+  ln -sf python${_pybasever}.1 "${pkgdir}"/usr/share/man/man1/python3.1
+  ln -sf python${_pybasever}.1 "${pkgdir}"/usr/share/man/man1/python.1
+
+  # Fix FS#22552
+  cp -f "${pkgdir}"/usr/lib/python${_pybasever}/config-${_pybasever}m/libpython${_pybasever}m.dll.a "${pkgdir}"/usr/lib/libpython${_pybasever}m.dll.a
+
+  # Clean-up reference to build directory
+  sed -i "s|$srcdir/Python-${pkgver}:||" "$pkgdir/usr/lib/python${_pybasever}/config-${_pybasever}m/Makefile"
+
+  # License
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  
+  # fix permissons
+  find ${pkgdir}/usr -type f \( -name *.dll -o -name *.exe \) | xargs chmod 0755
+}
