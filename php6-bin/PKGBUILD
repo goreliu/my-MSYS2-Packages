@@ -1,23 +1,24 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
-pkgname=php
+pkgname=php6-bin
+_realname=php
 pkgver=5.6.16
 pkgrel=1
 pkgdesc='An HTML-embedded scripting language'
 arch=('x86_64')
 license=('PHP')
 url='http://www.php.net'
-source=("http://windows.php.net/downloads/releases/${pkgname}-${pkgver}-nts-Win32-VC11-x64.zip")
+source=("http://windows.php.net/downloads/releases/${_realname}-${pkgver}-nts-Win32-VC11-x64.zip")
 md5sums=('6a15e5aa93a51ea680e105da08e35f1a')
 OPTIONS=(!strip)
 
 package() {
   cd "${srcdir}"
   rm ${pkgname}-${pkgver}-nts-Win32-VC11-x64.zip
-  mkdir -p "${pkgdir}/opt/php"
-  cp -r * "${pkgdir}/opt/php"
+  mkdir -p "${pkgdir}/opt/${_realname}"
+  cp -r * "${pkgdir}/opt/${_realname}"
 
   mkdir -p "${pkgdir}/usr/bin"
   cd "${pkgdir}/usr/bin"
-  ln -s ../../opt/php/*.exe .
+  ln -s ../../opt/${_realname}/*.exe .
 }

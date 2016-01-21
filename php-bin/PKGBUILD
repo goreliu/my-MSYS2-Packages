@@ -1,6 +1,6 @@
 # Maintainer: Gore Liu <goreliu@126.com>
 
-pkgname=php7
+pkgname=php-bin
 _realname=php
 pkgver=7.0.1
 pkgrel=1
