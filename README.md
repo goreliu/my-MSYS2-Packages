@@ -25,7 +25,6 @@ python3
 python-pip
 python-six
 ranger
-README.md
 remarshal
 ruby
 screenfetch
