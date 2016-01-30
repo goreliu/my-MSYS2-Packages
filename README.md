@@ -30,6 +30,7 @@ screenfetch
 sl
 w3m
 wput
+ydcv
 zsh
 zsh-completions
 ```
