@@ -26,7 +26,6 @@ python-pip
 python-six
 ranger
 remarshal
-screenfetch
 sl
 w3m
 wput
