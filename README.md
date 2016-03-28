@@ -22,8 +22,6 @@ php-bin
 popt
 python2
 python3
-python-pip
-python-six
 ranger
 remarshal
 sl
