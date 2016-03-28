@@ -20,8 +20,6 @@ percol-git
 php6-bin
 php-bin
 popt
-python2
-python3
 ranger
 remarshal
 sl
