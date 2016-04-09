@@ -16,7 +16,6 @@ hub
 jq
 jquery
 ncdu
-percol-git
 php6-bin
 php-bin
 popt
